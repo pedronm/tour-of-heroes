@@ -30,6 +30,7 @@ export class HeroService {
       );
   }
 
+  // O '`' define um template javascript.
   getHero(id: number): Observable<Hero>{
     const url = `${this.heroesUrl}/${id}`;
     return this.http.get<Hero>(url).pipe(
@@ -38,11 +39,50 @@ export class HeroService {
     );
   }
 
-  /** PUT: Atualiza o herói no servidor */
+  /** PUT: Atualiza o herói no servidor
+   * diferente do Put, ele espera que o servidor gere um id para o novo heroi
+   * retornando um Observador.
+   */
   updateHero (hero: Hero): Observable<any>{
     return this.http.put(this.heroesUrl, hero, httpOptions).pipe(
       tap(_ => this.log(`updated hero id=${hero.id}`)),
       catchError(this.handleError<any>('updateHero'))
+    );
+  }
+
+  /**
+   * Delete: deleta o herói do servidor
+   * @param hero
+   */
+  deleteHero(hero: Hero | number): Observable<Hero>{
+    const id = typeof hero === 'number' ? hero: hero.id;
+    const url = `${this.heroesUrl}/${id}`;
+
+    return this.http.delete<Hero>(url, httpOptions).pipe(
+      tap(_ => this.log(`deleted hero id=${id}`)),
+      catchError(this.handleError<Hero>('deleteHero'))
+    );
+  }
+
+  /** POST: adiciona um novo heroi ao servidor */
+  addHero (hero: Hero): Observable<Hero>{
+    return this.http.post<Hero>(this.heroesUrl, hero, httpOptions).pipe(
+      tap((newHero: Hero)=> this.log(`added hero w/ id=${newHero.id}`)),
+      catchError(this.handleError<Hero>('addHero'))
+    );
+  }
+
+  /**
+   * GET: busca heróis cujo os nomes contenham o termo da pesquisa
+   */
+  searchHeroes(term: string): Observable<Hero[]>{
+    if(!term.trim()){
+      // Se não tiver termo de pesquisa então retorna observador vazio.
+      return of([]);
+    }
+    return this.http.get<Hero[]>(`${this.heroesUrl}/?name=${term}`).pipe(
+      tap(_ => this.log(`found heroes amtching "${term}`)),
+      catchError(this.handleError<Hero[]>('searchHeroes', []))
     );
   }
 
