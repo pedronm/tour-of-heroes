@@ -11,7 +11,7 @@ import { HeroService } from '../hero.service';
 export class HeroesComponent implements OnInit {
 
   heroes: Hero[];
-  selectedHero: Hero ;
+  hero: Hero ;
 
   constructor(private heroService: HeroService) { }
 
@@ -20,7 +20,7 @@ export class HeroesComponent implements OnInit {
   }
 
   onSelect(hero: Hero):void{
-    this.selectedHero = hero;
+    this.hero = hero;
   }
 
   getHeroes(): void{
@@ -34,4 +34,7 @@ export class HeroesComponent implements OnInit {
     //subscribe, ela passa a ser assincrona
   }
 
+  save(): void{
+    this.heroService.updateHero(this.hero)
+  }
 }
