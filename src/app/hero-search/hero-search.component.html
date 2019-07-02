@@ -1,0 +1,22 @@
+<div>
+  <h4><label for="search-box">Hero Search</label></h4>
+
+  <!-- Toda vez que um usuário digita algo no input ao binding
+       chama o método search() com o valor do input como termo
+       da pesquisa. O termo se torna um observable que emite
+       uma lista de termos de pesquisa.-->
+  <input #searchBox id="searchbox" (input)="search(searchBox.value)"/>
+
+  <ul class="search-result">
+    <!--o $ indica que o objeto heroes é um observador e não um Array-->
+    <!-- A palavra async logo após o caracter de Pipe identfica o
+      componente nativo do angular AsyncPipe. Ele faz um subscribe
+      automaticamente para a classe de um componente então não
+      é preciso faze-lo. -->
+    <li *ngFor="let hero of heroes$ | async">
+      <a routerLink="/detail/{{hero.id}}">
+        {{hero.name}}
+      </a>
+    </li>
+  </ul>
+</div>
