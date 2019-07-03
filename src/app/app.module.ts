@@ -16,23 +16,21 @@ import { HeroSearchComponent } from './hero-search/hero-search.component';
 @NgModule({
   declarations: [
     AppComponent,
+    DashboardComponent,
     HeroesComponent,
     HeroDetailComponent,
     MessagesComponent,
-    DashboardComponent,
-    HttpClientModule,
     HeroSearchComponent,
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
+    HttpClientModule,
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, {dataEncapsulation: false}
     ),
-    InMemoryDataService,
   ],
-  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
